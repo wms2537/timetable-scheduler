@@ -1,0 +1,116 @@
+{
+    "solution": {
+      "Mon_P2": [
+        {
+          "teacher": "Smith",
+          "class": "10A",
+          "subject": "Science",
+          "room": "R101"
+        },
+        {
+          "teacher": "Jones",
+          "class": "10B",
+          "subject": "Math",
+          "room": "R102"
+        }
+      ],
+      "Tue_P1": [
+        {
+          "teacher": "Smith",
+          "class": "10A",
+          "subject": "Science",
+          "room": "R102"
+        },
+        {
+          "teacher": "Jones",
+          "class": "10B",
+          "subject": "English",
+          "room": "R101"
+        }
+      ],
+      "Mon_P3": [
+        {
+          "teacher": "Smith",
+          "class": "10B",
+          "subject": "Math",
+          "room": "R102"
+        },
+        {
+          "teacher": "Jones",
+          "class": "10A",
+          "subject": "Math",
+          "room": "R101"
+        }
+      ],
+      "Tue_P2": [
+        {
+          "teacher": "Smith",
+          "class": "10B",
+          "subject": "Science",
+          "room": "R101"
+        },
+        {
+          "teacher": "Wilson",
+          "class": "10A",
+          "subject": "English",
+          "room": "R102"
+        }
+      ],
+      "Mon_P1": [
+        {
+          "teacher": "Jones",
+          "class": "10A",
+          "subject": "English",
+          "room": "R102"
+        },
+        {
+          "teacher": "Wilson",
+          "class": "10B",
+          "subject": "Science",
+          "room": "R101"
+        }
+      ],
+      "Tue_P3": [
+        {
+          "teacher": "Jones",
+          "class": "10A",
+          "subject": "Math",
+          "room": "R101"
+        },
+        {
+          "teacher": "Wilson",
+          "class": "10B",
+          "subject": "English",
+          "room": "R102"
+        }
+      ]
+    },
+    "teachers": [
+      "Smith",
+      "Jones",
+      "Wilson"
+    ],
+    "subjects": [
+      "Math",
+      "Science",
+      "English"
+    ],
+    "classes": [
+      "10A",
+      "10B"
+    ],
+    "rooms": [
+      "R101",
+      "R102"
+    ],
+    "days": [
+      "Mon",
+      "Tue"
+    ],
+    "periods": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "break_periods": []
+  }

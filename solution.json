@@ -1,0 +1,485 @@
+{
+  "solution": {
+    "Mon_P2": [
+      {
+        "teacher": "Smith",
+        "class": "10A",
+        "subject": "Math",
+        "room": "R103"
+      },
+      {
+        "teacher": "Jones",
+        "class": "11B",
+        "subject": "English",
+        "room": "R102"
+      },
+      {
+        "teacher": "Wilson",
+        "class": "11A",
+        "subject": "PE",
+        "room": "Gym"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10B",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Davis",
+        "class": "12A",
+        "subject": "History",
+        "room": "R101"
+      }
+    ],
+    "Tue_P5": [
+      {
+        "teacher": "Smith",
+        "class": "10A",
+        "subject": "Math",
+        "room": "R101"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10B",
+        "subject": "English",
+        "room": "R103"
+      }
+    ],
+    "Wed_P4": [
+      {
+        "teacher": "Smith",
+        "class": "10A",
+        "subject": "Math",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Davis",
+        "class": "12A",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Tue_P6": [
+      {
+        "teacher": "Smith",
+        "class": "10A",
+        "subject": "Science",
+        "room": "R101"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10B",
+        "subject": "English",
+        "room": "R103"
+      }
+    ],
+    "Fri_P2": [
+      {
+        "teacher": "Smith",
+        "class": "10A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Davis",
+        "class": "12A",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Fri_P4": [
+      {
+        "teacher": "Smith",
+        "class": "10A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "PE",
+        "room": "Gym"
+      },
+      {
+        "teacher": "Davis",
+        "class": "12A",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Tue_P4": [
+      {
+        "teacher": "Smith",
+        "class": "11A",
+        "subject": "Math",
+        "room": "R102"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10A",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Thu_P5": [
+      {
+        "teacher": "Smith",
+        "class": "11A",
+        "subject": "Math",
+        "room": "R102"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10A",
+        "subject": "History",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "Science",
+        "room": "Lab1"
+      }
+    ],
+    "Thu_P6": [
+      {
+        "teacher": "Smith",
+        "class": "11A",
+        "subject": "Math",
+        "room": "R103"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10B",
+        "subject": "History",
+        "room": "R101"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "Science",
+        "room": "Lab1"
+      }
+    ],
+    "Mon_P5": [
+      {
+        "teacher": "Smith",
+        "class": "11A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "Math",
+        "room": "R101"
+      }
+    ],
+    "Thu_P2": [
+      {
+        "teacher": "Smith",
+        "class": "11A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Jones",
+        "class": "11B",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Thu_P4": [
+      {
+        "teacher": "Smith",
+        "class": "11A",
+        "subject": "Science",
+        "room": "Lab1"
+      }
+    ],
+    "Mon_P4": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Math",
+        "room": "R102"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10B",
+        "subject": "English",
+        "room": "R101"
+      },
+      {
+        "teacher": "Davis",
+        "class": "11A",
+        "subject": "English",
+        "room": "R103"
+      }
+    ],
+    "Wed_P5": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Math",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10B",
+        "subject": "Math",
+        "room": "R101"
+      }
+    ],
+    "Wed_P6": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Math",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10B",
+        "subject": "Math",
+        "room": "R101"
+      }
+    ],
+    "Thu_P1": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Math",
+        "room": "R102"
+      },
+      {
+        "teacher": "Jones",
+        "class": "11B",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Mon_P6": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "Math",
+        "room": "R101"
+      }
+    ],
+    "Tue_P2": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Brown",
+        "class": "11B",
+        "subject": "Math",
+        "room": "R103"
+      },
+      {
+        "teacher": "Davis",
+        "class": "11A",
+        "subject": "History",
+        "room": "R101"
+      }
+    ],
+    "Fri_P1": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Jones",
+        "class": "10B",
+        "subject": "History",
+        "room": "R101"
+      },
+      {
+        "teacher": "Davis",
+        "class": "11A",
+        "subject": "History",
+        "room": "R103"
+      }
+    ],
+    "Fri_P5": [
+      {
+        "teacher": "Smith",
+        "class": "12A",
+        "subject": "Science",
+        "room": "Lab1"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10A",
+        "subject": "PE",
+        "room": "Gym"
+      },
+      {
+        "teacher": "Davis",
+        "class": "11A",
+        "subject": "English",
+        "room": "R103"
+      }
+    ],
+    "Tue_P1": [
+      {
+        "teacher": "Jones",
+        "class": "10A",
+        "subject": "English",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10B",
+        "subject": "Math",
+        "room": "R102"
+      },
+      {
+        "teacher": "Davis",
+        "class": "12A",
+        "subject": "History",
+        "room": "R101"
+      }
+    ],
+    "Wed_P2": [
+      {
+        "teacher": "Jones",
+        "class": "10A",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Wed_P1": [
+      {
+        "teacher": "Jones",
+        "class": "10A",
+        "subject": "History",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10B",
+        "subject": "Science",
+        "room": "Lab1"
+      }
+    ],
+    "Mon_P1": [
+      {
+        "teacher": "Jones",
+        "class": "11B",
+        "subject": "History",
+        "room": "R102"
+      },
+      {
+        "teacher": "Wilson",
+        "class": "10B",
+        "subject": "PE",
+        "room": "Gym"
+      },
+      {
+        "teacher": "Davis",
+        "class": "11A",
+        "subject": "English",
+        "room": "R101"
+      }
+    ],
+    "Fri_P6": [
+      {
+        "teacher": "Jones",
+        "class": "11B",
+        "subject": "History",
+        "room": "R103"
+      },
+      {
+        "teacher": "Brown",
+        "class": "10B",
+        "subject": "Science",
+        "room": "Lab1"
+      }
+    ]
+  },
+  "teachers": [
+    "Smith",
+    "Jones",
+    "Wilson",
+    "Brown",
+    "Davis"
+  ],
+  "subjects": [
+    "Math",
+    "Science",
+    "English",
+    "History",
+    "PE"
+  ],
+  "classes": [
+    "10A",
+    "10B",
+    "11A",
+    "11B",
+    "12A"
+  ],
+  "rooms": [
+    "R101",
+    "R102",
+    "R103",
+    "Lab1",
+    "Gym"
+  ],
+  "days": [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri"
+  ],
+  "periods": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6"
+  ],
+  "break_periods": [
+    [
+      "Mon",
+      "P3"
+    ],
+    [
+      "Tue",
+      "P3"
+    ],
+    [
+      "Wed",
+      "P3"
+    ],
+    [
+      "Thu",
+      "P3"
+    ],
+    [
+      "Fri",
+      "P3"
+    ]
+  ]
+}

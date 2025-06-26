@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Timetable Scheduler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#8b5cf6',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+        .tab-active {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .timetable-cell {
+            min-height: 80px;
+            transition: all 0.2s;
+        }
+        
+        .timetable-cell:hover {
+            background-color: #f0f9ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">School Timetable Scheduler</h1>
+            <p class="text-gray-600">Create optimal timetables with advanced constraints</p>
+        </header>
+        
+        <!-- Stepper Navigation -->
+        <div class="flex items-center justify-between mb-8 bg-white rounded-lg p-4 shadow">
+            <div id="step1" class="flex-1 text-center py-2 rounded-lg step-active cursor-pointer" onclick="showStep(1)">
+                1. Basic Setup
+            </div>
+            <div class="w-12 h-1 bg-gray-200"></div>
+            <div id="step2" class="flex-1 text-center py-2 rounded-lg cursor-pointer" onclick="showStep(2)">
+                2. Teacher & Subject Mapping
+            </div>
+            <div class="w-12 h-1 bg-gray-200"></div>
+            <div id="step3" class="flex-1 text-center py-2 rounded-lg cursor-pointer" onclick="showStep(3)">
+                3. Class & Room Setup
+            </div>
+            <div class="w-12 h-1 bg-gray-200"></div>
+            <div id="step4" class="flex-1 text-center py-2 rounded-lg cursor-pointer" onclick="showStep(4)">
+                4. Advanced Constraints
+            </div>
+            <div class="w-12 h-1 bg-gray-200"></div>
+            <div id="step5" class="flex-1 text-center py-2 rounded-lg cursor-pointer" onclick="showStep(5)">
+                5. Results
+            </div>
+        </div>
+        
+        <!-- Step 1: Basic Setup -->
+        <div id="step1-content" class="bg-white rounded-lg p-6 shadow mb-8">
+            <h2 class="text-xl font-semibold mb-4">Basic Setup</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Teachers -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Teachers (one per line)</label>
+                    <textarea 
+                        id="teachers" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                        rows="5"
+                        placeholder="Smith&#10;Jones&#10;Wilson&#10;Brown&#10;Davis"
+                    ></textarea>
+                </div>
+                
+                <!-- Subjects -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Subjects (one per line)</label>
+                    <textarea 
+                        id="subjects" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                        rows="5"
+                        placeholder="Math&#10;Science&#10;English&#10;History&#10;PE"
+                    ></textarea>
+                </div>
+                
+                <!-- Classes -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Classes (one per line)</label>
+                    <textarea 
+                        id="classes" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                        rows="5"
+                        placeholder="10A&#10;10B&#10;11A&#10;11B&#10;12A"
+                    ></textarea>
+                </div>
+                
+                <!-- Rooms -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Rooms (one per line)</label>
+                    <textarea 
+                        id="rooms" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                        rows="5"
+                        placeholder="R101&#10;R102&#10;R103&#10;Lab1&#10;Gym"
+                    ></textarea>
+                </div>
+                
+                <!-- Days -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Days (one per line)</label>
+                    <textarea 
+                        id="days" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                        rows="5"
+                        placeholder="Mon&#10;Tue&#10;Wed&#10;Thu&#10;Fri"
+                    ></textarea>
+                </div>
+                
+                <!-- Periods -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Periods (one per line)</label>
+                    <textarea 
+                        id="periods" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                        rows="5"
+                        placeholder="P1&#10;P2&#10;P3&#10;P4&#10;P5&#10;P6"
+                    ></textarea>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end">
+                <button id="next-step1" class="bg-primary text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition">
+                    Next
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 2: Teacher & Subject Mapping -->
+        <div id="step2-content" class="bg-white rounded-lg p-6 shadow mb-8 hidden">
+            <h2 class="text-xl font-semibold mb-4">Teacher & Subject Mapping</h2>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Teacher Subjects</h3>
+                <p class="text-gray-600 text-sm mb-4">Select which subjects each teacher can teach</p>
+                <div id="teacher-subjects-container" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Teacher Classes</h3>
+                <p class="text-gray-600 text-sm mb-4">Select which classes each teacher teaches</p>
+                <div id="teacher-classes-container" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-between">
+                <button onclick="showStep(1)" class="border border-gray-300 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
+                    Previous
+                </button>
+                <button id="next-step2" class="bg-primary text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition">
+                    Next
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 3: Class & Room Setup -->
+        <div id="step3-content" class="bg-white rounded-lg p-6 shadow mb-8 hidden">
+            <h2 class="text-xl font-semibold mb-4">Class & Room Setup</h2>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Class Subjects</h3>
+                <p class="text-gray-600 text-sm mb-4">Set the number of periods per week for each class-subject combination</p>
+                <div id="class-subjects-container" class="overflow-x-auto">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Subject Constraints</h3>
+                <p class="text-gray-600 text-sm mb-4">Set min/max daily periods for each subject</p>
+                <div id="subject-constraints-container" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Room Suitability</h3>
+                <p class="text-gray-600 text-sm mb-4">Select which rooms are suitable for each subject</p>
+                <div id="room-suitability-container" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Class Rankings</h3>
+                <p class="text-gray-600 text-sm mb-4">Rank classes from 1-10 (higher is better)</p>
+                <div id="class-rankings-container" class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-between">
+                <button onclick="showStep(2)" class="border border-gray-300 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
+                    Previous
+                </button>
+                <button id="next-step3" class="bg-primary text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition">
+                    Next
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 4: Advanced Constraints -->
+        <div id="step4-content" class="bg-white rounded-lg p-6 shadow mb-8 hidden">
+            <h2 class="text-xl font-semibold mb-4">Advanced Constraints</h2>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Break Periods</h3>
+                <p class="text-gray-600 text-sm mb-4">Select break/lunch periods</p>
+                <div id="break-periods-container" class="overflow-x-auto">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Teacher Unavailability</h3>
+                <p class="text-gray-600 text-sm mb-4">Select periods when teachers are unavailable</p>
+                <div id="teacher-unavailability-container">
+                    <div class="mb-4">
+                        <select id="unavailable-teacher-select" class="w-full md:w-1/2 p-2 border rounded-lg">
+                            <!-- Dynamically filled -->
+                        </select>
+                    </div>
+                    <div id="teacher-unavailability-grid" class="overflow-x-auto">
+                        <!-- Dynamically filled -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Teacher Preferences</h3>
+                <p class="text-gray-600 text-sm mb-4">Set preference scores for teacher timeslots (0-10, higher is more preferred)</p>
+                <div id="teacher-preferences-container">
+                    <div class="mb-4">
+                        <select id="preference-teacher-select" class="w-full md:w-1/2 p-2 border rounded-lg">
+                            <!-- Dynamically filled -->
+                        </select>
+                    </div>
+                    <div id="teacher-preference-grid" class="overflow-x-auto">
+                        <!-- Dynamically filled -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Consecutive Periods</h3>
+                <p class="text-gray-600 text-sm mb-4">Set which subjects require consecutive periods and how many</p>
+                <div id="consecutive-periods-container" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Dynamically filled -->
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-medium mb-2">Fixed Assignments</h3>
+                <p class="text-gray-600 text-sm mb-4">Set fixed teacher-class-subject assignments</p>
+                <div id="fixed-assignments-container">
+                    <div id="fixed-assignments-list" class="mb-4">
+                        <!-- Existing fixed assignments will appear here -->
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="w-full md:w-1/4">
+                            <select id="fixed-teacher" class="w-full p-2 border rounded-lg">
+                                <!-- Dynamically filled -->
+                            </select>
+                        </div>
+                        <div class="w-full md:w-1/4">
+                            <select id="fixed-class" class="w-full p-2 border rounded-lg">
+                                <!-- Dynamically filled -->
+                            </select>
+                        </div>
+                        <div class="w-full md:w-1/4">
+                            <select id="fixed-subject" class="w-full p-2 border rounded-lg">
+                                <!-- Dynamically filled -->
+                            </select>
+                        </div>
+                        <div class="w-full md:w-1/4">
+                            <button id="add-fixed-assignment" class="bg-secondary text-white py-2 px-4 rounded-lg w-full">
+                                Add Assignment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-between">
+                <button onclick="showStep(3)" class="border border-gray-300 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
+                    Previous
+                </button>
+                <button id="generate-schedule" class="bg-primary text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition flex items-center">
+                    <span>Generate Schedule</span>
+                    <span id="loading-spinner" class="ml-2 hidden">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 5: Results -->
+        <div id="step5-content" class="bg-white rounded-lg p-6 shadow mb-8 hidden">
+            <h2 class="text-xl font-semibold mb-4">Generated Timetable</h2>
+            
+            <div class="mb-6">
+                <div class="flex border-b">
+                    <button id="view-room-btn" class="py-2 px-4 font-medium tab-active" onclick="switchView('room')">Room View</button>
+                    <button id="view-teacher-btn" class="py-2 px-4 font-medium" onclick="switchView('teacher')">Teacher View</button>
+                    <button id="view-class-btn" class="py-2 px-4 font-medium" onclick="switchView('class')">Class View</button>
+                </div>
+            </div>
+            
+            <div id="view-selector" class="mb-4">
+                <select id="view-entity-select" class="w-full md:w-1/2 p-2 border rounded-lg">
+                    <!-- Dynamically filled with rooms/teachers/classes depending on view -->
+                </select>
+            </div>
+            
+            <div id="timetable-container" class="overflow-x-auto">
+                <!-- Timetable will be rendered here -->
+            </div>
+            
+            <div class="mt-6 flex justify-between">
+                <button onclick="showStep(4)" class="border border-gray-300 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
+                    Back to Setup
+                </button>
+                <button onclick="downloadTimetable()" class="bg-secondary text-white py-2 px-6 rounded-lg hover:bg-green-600 transition">
+                    Download Timetable
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

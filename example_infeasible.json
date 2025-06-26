@@ -1,0 +1,87 @@
+{
+    "teachers": ["Smith", "Jones", "Wilson", "Brown", "Davis"],
+    "subjects": ["Math", "Science", "English", "History", "PE"],
+    "classes": ["10A", "10B", "11A", "11B", "12A"],
+    "rooms": ["R101", "R102", "R103", "Lab1", "Gym"],
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "periods": ["P1", "P2", "P3", "P4", "P5", "P6"],
+    
+    "teacher_subjects": {
+      "Smith": ["Math", "Science"],
+      "Jones": ["English", "History"],
+      "Wilson": ["Math", "PE"],
+      "Brown": ["Science", "Math"],
+      "Davis": ["History", "English"]
+    },
+    
+    "teacher_classes": {
+      "Smith": ["10A", "11A", "12A"],
+      "Jones": ["10A", "10B", "11B"],
+      "Wilson": ["10B", "11A", "12A"],
+      "Brown": ["10A", "10B", "11B"],
+      "Davis": ["11A", "11B", "12A"]
+    },
+    
+    "class_subjects": {
+      "10A": {"Math": 5, "Science": 4, "English": 5, "History": 3, "PE": 2},
+      "10B": {"Math": 5, "Science": 4, "English": 5, "History": 3, "PE": 2},
+      "11A": {"Math": 5, "Science": 5, "English": 4, "History": 4, "PE": 2},
+      "11B": {"Math": 5, "Science": 5, "English": 4, "History": 4, "PE": 2},
+      "12A": {"Math": 6, "Science": 6, "English": 5, "History": 3, "PE": 0}
+    },
+    
+    "subject_constraints": {
+      "Math": [0, 2],
+      "Science": [0, 2],
+      "English": [0, 2],
+      "History": [0, 1],
+      "PE": [0, 1]
+    },
+    
+    "class_rankings": {
+      "10A": 8,
+      "10B": 4,
+      "11A": 8,
+      "11B": 4,
+      "12A": 7
+    },
+    
+    "room_suitability": {
+      "Science": ["Lab1", "R101"],
+      "PE": ["Gym"],
+      "Math": ["R101", "R102", "R103"],
+      "English": ["R101", "R102", "R103"],
+      "History": ["R101", "R102", "R103"]
+    },
+    
+    "fixed_assignments": [
+      {"teacher": "Smith", "class": "12A", "subject": "Math"},
+      {"teacher": "Davis", "class": "11A", "subject": "History"}
+    ],
+    
+    "teacher_unavailability": {
+      "Smith": [["Mon", "P1"], ["Mon", "P2"], ["Mon", "P4"], ["Mon", "P5"], ["Mon", "P6"],
+                ["Tue", "P1"], ["Tue", "P2"], ["Tue", "P4"], ["Tue", "P5"], ["Tue", "P6"],
+                ["Wed", "P1"], ["Wed", "P2"], ["Wed", "P4"], ["Wed", "P5"], ["Wed", "P6"],
+                ["Thu", "P1"], ["Thu", "P2"], ["Thu", "P4"], ["Thu", "P5"], ["Thu", "P6"],
+                ["Fri", "P1"], ["Fri", "P2"], ["Fri", "P4"], ["Fri", "P5"], ["Fri", "P6"]],
+      "Jones": [["Wed", "P3"], ["Wed", "P4"]]
+    },
+    
+    "teacher_preferences": {
+      "Wilson": [["Mon", "P1", 10], ["Mon", "P2", 8]],
+      "Brown": [["Fri", "P5", 10], ["Fri", "P6", 10]]
+    },
+    
+    "consecutive_periods": {
+      "Science": 2
+    },
+    
+    "break_periods": [
+      ["Mon", "P3"],
+      ["Tue", "P3"],
+      ["Wed", "P3"],
+      ["Thu", "P3"],
+      ["Fri", "P3"]
+    ]
+  } 
