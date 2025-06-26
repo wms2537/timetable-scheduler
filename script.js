@@ -6,6 +6,90 @@ let currentEntity = '';
 // State for fixed assignments
 let fixedAssignments = [];
 
+// Example data hardcoded
+const exampleData = {
+    "teachers": ["Smith", "Jones", "Wilson", "Brown", "Davis"],
+    "subjects": ["Math", "Science", "English", "History", "PE"],
+    "classes": ["10A", "10B", "11A", "11B", "12A"],
+    "rooms": ["R101", "R102", "R103", "Lab1", "Gym"],
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "periods": ["P1", "P2", "P3", "P4", "P5", "P6"],
+    
+    "teacher_subjects": {
+      "Smith": ["Math", "Science"],
+      "Jones": ["English", "History"],
+      "Wilson": ["Math", "PE"],
+      "Brown": ["Science", "Math", "PE"],
+      "Davis": ["History", "English"]
+    },
+    
+    "teacher_classes": {
+      "Smith": ["10A", "11A", "12A"],
+      "Jones": ["10A", "10B", "11B"],
+      "Wilson": ["10B", "11A", "12A"],
+      "Brown": ["10A", "10B", "11B"],
+      "Davis": ["11A", "11B", "12A"]
+    },
+    
+    "class_subjects": {
+      "10A": {"Math": 3, "Science": 3, "English": 3, "History": 2, "PE": 1},
+      "10B": {"Math": 3, "Science": 3, "English": 3, "History": 2, "PE": 1},
+      "11A": {"Math": 3, "Science": 3, "English": 3, "History": 2, "PE": 1},
+      "11B": {"Math": 3, "Science": 3, "English": 3, "History": 2, "PE": 1},
+      "12A": {"Math": 4, "Science": 4, "English": 3, "History": 2, "PE": 0}
+    },
+    
+    "subject_constraints": {
+      "Math": [0, 2],
+      "Science": [0, 2],
+      "English": [0, 2],
+      "History": [0, 1],
+      "PE": [0, 1]
+    },
+    
+    "class_rankings": {
+      "10A": 8,
+      "10B": 4,
+      "11A": 8,
+      "11B": 4,
+      "12A": 7
+    },
+    
+    "room_suitability": {
+      "Science": ["Lab1", "R101"],
+      "PE": ["Gym"],
+      "Math": ["R101", "R102", "R103"],
+      "English": ["R101", "R102", "R103"],
+      "History": ["R101", "R102", "R103"]
+    },
+    
+    "fixed_assignments": [
+      {"teacher": "Smith", "class": "12A", "subject": "Math"},
+      {"teacher": "Davis", "class": "11A", "subject": "History"}
+    ],
+    
+    "teacher_unavailability": {
+      "Smith": [["Mon", "P1"], ["Fri", "P6"]],
+      "Jones": [["Wed", "P3"], ["Wed", "P4"]]
+    },
+    
+    "teacher_preferences": {
+      "Wilson": [["Mon", "P1", 10], ["Mon", "P2", 8]],
+      "Brown": [["Fri", "P5", 10], ["Fri", "P6", 10]]
+    },
+    
+    "consecutive_periods": {
+    },
+    
+    "break_periods": [
+      ["Mon", "P3"],
+      ["Tue", "P3"],
+      ["Wed", "P3"],
+      ["Thu", "P3"],
+      ["Fri", "P3"]
+    ]
+};
+
 // Initialize form when document loads
 document.addEventListener('DOMContentLoaded', () => {
     // Set up event listeners
@@ -37,6 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('generate-schedule').addEventListener('click', generateSchedule);
     document.getElementById('add-fixed-assignment').addEventListener('click', addFixedAssignment);
     
+    // Add event listener for loading example data
+    document.getElementById('load-example').addEventListener('click', loadExampleData);
+    
     // Populate sample data for demo purposes
     populateSampleData();
 });
@@ -55,6 +142,30 @@ function showStep(step) {
     // Show selected step
     document.getElementById(`step${step}-content`).classList.remove('hidden');
     document.getElementById(`step${step}`).classList.add('step-active');
+}
+
+// Load example data from hardcoded example
+function loadExampleData() {
+    try {
+        const data = exampleData;
+        
+        // Fill in basic data
+        document.getElementById('teachers').value = data.teachers.join('\n');
+        document.getElementById('subjects').value = data.subjects.join('\n');
+        document.getElementById('classes').value = data.classes.join('\n');
+        document.getElementById('rooms').value = data.rooms.join('\n');
+        document.getElementById('days').value = data.days.join('\n');
+        document.getElementById('periods').value = data.periods.join('\n');
+        
+        // Store fixed assignments for later use
+        fixedAssignments = data.fixed_assignments || [];
+        
+        // Alert the user
+        alert('Example data loaded successfully! Click Next to continue.');
+    } catch (error) {
+        console.error('Error loading example data:', error);
+        alert('Failed to load example data. Please check the console for details.');
+    }
 }
 
 // Form validation functions
@@ -113,6 +224,16 @@ function populateTeacherSubjects() {
         `;
         container.appendChild(teacherDiv);
     });
+    
+    // Check boxes based on loaded example data
+    if (exampleData && exampleData.teacher_subjects) {
+        for (const [teacher, subjects] of Object.entries(exampleData.teacher_subjects)) {
+            subjects.forEach(subject => {
+                const checkbox = document.querySelector(`input[name="teacher-subject-${teacher}"][value="${subject}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+    }
 }
 
 function populateTeacherClasses() {
@@ -140,6 +261,16 @@ function populateTeacherClasses() {
         `;
         container.appendChild(teacherDiv);
     });
+    
+    // Check boxes based on loaded example data
+    if (exampleData && exampleData.teacher_classes) {
+        for (const [teacher, classes] of Object.entries(exampleData.teacher_classes)) {
+            classes.forEach(classId => {
+                const checkbox = document.querySelector(`input[name="teacher-class-${teacher}"][value="${classId}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+    }
 }
 
 function populateClassSubjects() {
@@ -181,6 +312,16 @@ function populateClassSubjects() {
     
     table.innerHTML = `<thead>${headerRow}</thead><tbody>${dataRows}</tbody>`;
     container.appendChild(table);
+    
+    // Fill in values from example data
+    if (exampleData && exampleData.class_subjects) {
+        for (const [classId, subjects] of Object.entries(exampleData.class_subjects)) {
+            for (const [subject, periods] of Object.entries(subjects)) {
+                const input = document.getElementById(`class-subject-${classId}-${subject}`);
+                if (input) input.value = periods;
+            }
+        }
+    }
 }
 
 function populateSubjectConstraints() {
@@ -207,6 +348,17 @@ function populateSubjectConstraints() {
         `;
         container.appendChild(subjectDiv);
     });
+    
+    // Fill in values from example data
+    if (exampleData && exampleData.subject_constraints) {
+        for (const [subject, constraints] of Object.entries(exampleData.subject_constraints)) {
+            const minInput = document.getElementById(`subject-min-${subject}`);
+            const maxInput = document.getElementById(`subject-max-${subject}`);
+            
+            if (minInput && constraints.length > 0) minInput.value = constraints[0];
+            if (maxInput && constraints.length > 1) maxInput.value = constraints[1];
+        }
+    }
 }
 
 function populateRoomSuitability() {
@@ -234,6 +386,21 @@ function populateRoomSuitability() {
         `;
         container.appendChild(subjectDiv);
     });
+    
+    // Uncheck all checkboxes first
+    document.querySelectorAll('[name^="room-subject-"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Check boxes based on example data
+    if (exampleData && exampleData.room_suitability) {
+        for (const [subject, rooms] of Object.entries(exampleData.room_suitability)) {
+            rooms.forEach(room => {
+                const checkbox = document.querySelector(`input[name="room-subject-${subject}"][value="${room}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+    }
 }
 
 function populateClassRankings() {
@@ -255,10 +422,23 @@ function populateClassRankings() {
         container.appendChild(classDiv);
         
         // Add event listener to update the displayed value
-        document.getElementById(`class-rank-${classId}`).addEventListener('input', (e) => {
-            document.getElementById(`class-rank-value-${classId}`).textContent = e.target.value;
+        document.getElementById(`class-rank-${classId}`).addEventListener('input', function() {
+            document.getElementById(`class-rank-value-${classId}`).textContent = this.value;
         });
     });
+    
+    // Fill in values from example data
+    if (exampleData && exampleData.class_rankings) {
+        for (const [classId, ranking] of Object.entries(exampleData.class_rankings)) {
+            const input = document.getElementById(`class-rank-${classId}`);
+            const valueSpan = document.getElementById(`class-rank-value-${classId}`);
+            
+            if (input) {
+                input.value = ranking;
+                if (valueSpan) valueSpan.textContent = ranking;
+            }
+        }
+    }
 }
 
 function populateBreakPeriods() {
@@ -273,22 +453,20 @@ function populateBreakPeriods() {
     table.className = 'min-w-full';
     
     // Create header row
-    let headerRow = '<tr><th class="py-2 px-4 bg-gray-100 text-left">Period</th>';
-    days.forEach(day => {
-        headerRow += `<th class="py-2 px-4 bg-gray-100 text-center">${day}</th>`;
+    let headerRow = '<tr><th class="py-2 px-4 bg-gray-100 text-left">Day</th>';
+    periods.forEach(period => {
+        headerRow += `<th class="py-2 px-4 bg-gray-100 text-center">${period}</th>`;
     });
     headerRow += '</tr>';
     
     // Create data rows
     let dataRows = '';
-    periods.forEach(period => {
-        dataRows += `<tr><td class="py-2 px-4 border-b">${period}</td>`;
-        days.forEach(day => {
+    days.forEach(day => {
+        dataRows += `<tr><td class="py-2 px-4 border-b">${day}</td>`;
+        periods.forEach(period => {
             dataRows += `
                 <td class="py-2 px-4 border-b text-center">
-                    <input type="checkbox" 
-                           class="rounded text-primary" 
-                           id="break-${day}-${period}">
+                    <input type="checkbox" class="rounded text-primary" name="break-period" data-day="${day}" data-period="${period}">
                 </td>
             `;
         });
@@ -297,29 +475,32 @@ function populateBreakPeriods() {
     
     table.innerHTML = `<thead>${headerRow}</thead><tbody>${dataRows}</tbody>`;
     container.appendChild(table);
+    
+    // Check boxes based on example data
+    if (exampleData && exampleData.break_periods) {
+        exampleData.break_periods.forEach(([day, period]) => {
+            const checkbox = document.querySelector(`input[name="break-period"][data-day="${day}"][data-period="${period}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
 }
 
 function populateTeacherUnavailability() {
-    const teacherSelect = document.getElementById('unavailable-teacher-select');
-    teacherSelect.innerHTML = '';
+    const selectElement = document.getElementById('unavailable-teacher-select');
+    selectElement.innerHTML = '<option value="">Select a teacher</option>';
     
     const teachers = getArrayFromTextarea('teachers');
-    
     teachers.forEach(teacher => {
-        const option = document.createElement('option');
-        option.value = teacher;
-        option.textContent = teacher;
-        teacherSelect.appendChild(option);
+        selectElement.innerHTML += `<option value="${teacher}">${teacher}</option>`;
     });
     
-    // Generate unavailability grid for first teacher
-    if (teachers.length > 0) {
-        generateUnavailabilityGrid(teachers[0]);
-    }
-    
-    // Add event listener to switch teacher
-    teacherSelect.addEventListener('change', (e) => {
-        generateUnavailabilityGrid(e.target.value);
+    // Add event listener to show grid when teacher is selected
+    selectElement.addEventListener('change', function() {
+        if (this.value) {
+            generateUnavailabilityGrid(this.value);
+        } else {
+            document.getElementById('teacher-unavailability-grid').innerHTML = '';
+        }
     });
 }
 
@@ -335,25 +516,20 @@ function generateUnavailabilityGrid(teacher) {
     table.className = 'min-w-full';
     
     // Create header row
-    let headerRow = '<tr><th class="py-2 px-4 bg-gray-100 text-left">Period</th>';
-    days.forEach(day => {
-        headerRow += `<th class="py-2 px-4 bg-gray-100 text-center">${day}</th>`;
+    let headerRow = '<tr><th class="py-2 px-4 bg-gray-100 text-left">Day</th>';
+    periods.forEach(period => {
+        headerRow += `<th class="py-2 px-4 bg-gray-100 text-center">${period}</th>`;
     });
     headerRow += '</tr>';
     
     // Create data rows
     let dataRows = '';
-    periods.forEach(period => {
-        dataRows += `<tr><td class="py-2 px-4 border-b">${period}</td>`;
-        days.forEach(day => {
+    days.forEach(day => {
+        dataRows += `<tr><td class="py-2 px-4 border-b">${day}</td>`;
+        periods.forEach(period => {
             dataRows += `
                 <td class="py-2 px-4 border-b text-center">
-                    <input type="checkbox" 
-                           class="rounded text-primary" 
-                           id="unavailable-${teacher}-${day}-${period}"
-                           data-day="${day}"
-                           data-period="${period}"
-                           data-teacher="${teacher}">
+                    <input type="checkbox" class="rounded text-primary" name="unavailable-${teacher}" data-day="${day}" data-period="${period}">
                 </td>
             `;
         });
@@ -362,29 +538,32 @@ function generateUnavailabilityGrid(teacher) {
     
     table.innerHTML = `<thead>${headerRow}</thead><tbody>${dataRows}</tbody>`;
     container.appendChild(table);
+    
+    // Check boxes based on example data
+    if (exampleData && exampleData.teacher_unavailability && exampleData.teacher_unavailability[teacher]) {
+        exampleData.teacher_unavailability[teacher].forEach(([day, period]) => {
+            const checkbox = document.querySelector(`input[name="unavailable-${teacher}"][data-day="${day}"][data-period="${period}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
 }
 
 function populateTeacherPreferences() {
-    const teacherSelect = document.getElementById('preference-teacher-select');
-    teacherSelect.innerHTML = '';
+    const selectElement = document.getElementById('preference-teacher-select');
+    selectElement.innerHTML = '<option value="">Select a teacher</option>';
     
     const teachers = getArrayFromTextarea('teachers');
-    
     teachers.forEach(teacher => {
-        const option = document.createElement('option');
-        option.value = teacher;
-        option.textContent = teacher;
-        teacherSelect.appendChild(option);
+        selectElement.innerHTML += `<option value="${teacher}">${teacher}</option>`;
     });
     
-    // Generate preference grid for first teacher
-    if (teachers.length > 0) {
-        generatePreferenceGrid(teachers[0]);
-    }
-    
-    // Add event listener to switch teacher
-    teacherSelect.addEventListener('change', (e) => {
-        generatePreferenceGrid(e.target.value);
+    // Add event listener to show grid when teacher is selected
+    selectElement.addEventListener('change', function() {
+        if (this.value) {
+            generatePreferenceGrid(this.value);
+        } else {
+            document.getElementById('teacher-preference-grid').innerHTML = '';
+        }
     });
 }
 
@@ -400,27 +579,26 @@ function generatePreferenceGrid(teacher) {
     table.className = 'min-w-full';
     
     // Create header row
-    let headerRow = '<tr><th class="py-2 px-4 bg-gray-100 text-left">Period</th>';
-    days.forEach(day => {
-        headerRow += `<th class="py-2 px-4 bg-gray-100 text-center">${day}</th>`;
+    let headerRow = '<tr><th class="py-2 px-4 bg-gray-100 text-left">Day</th>';
+    periods.forEach(period => {
+        headerRow += `<th class="py-2 px-4 bg-gray-100 text-center">${period}</th>`;
     });
     headerRow += '</tr>';
     
     // Create data rows
     let dataRows = '';
-    periods.forEach(period => {
-        dataRows += `<tr><td class="py-2 px-4 border-b">${period}</td>`;
-        days.forEach(day => {
+    days.forEach(day => {
+        dataRows += `<tr><td class="py-2 px-4 border-b">${day}</td>`;
+        periods.forEach(period => {
             dataRows += `
                 <td class="py-2 px-4 border-b text-center">
                     <input type="number" 
                            min="0" 
                            max="10" 
                            class="w-12 p-1 text-center border rounded" 
-                           id="preference-${teacher}-${day}-${period}"
-                           data-day="${day}"
-                           data-period="${period}"
-                           data-teacher="${teacher}"
+                           name="preference-${teacher}" 
+                           data-day="${day}" 
+                           data-period="${period}" 
                            value="0">
                 </td>
             `;
@@ -430,6 +608,14 @@ function generatePreferenceGrid(teacher) {
     
     table.innerHTML = `<thead>${headerRow}</thead><tbody>${dataRows}</tbody>`;
     container.appendChild(table);
+    
+    // Fill in values from example data
+    if (exampleData && exampleData.teacher_preferences && exampleData.teacher_preferences[teacher]) {
+        exampleData.teacher_preferences[teacher].forEach(([day, period, score]) => {
+            const input = document.querySelector(`input[name="preference-${teacher}"][data-day="${day}"][data-period="${period}"]`);
+            if (input) input.value = score;
+        });
+    }
 }
 
 function populateConsecutivePeriods() {
@@ -444,52 +630,55 @@ function populateConsecutivePeriods() {
         subjectDiv.innerHTML = `
             <h4 class="font-medium mb-2">${subject}</h4>
             <div>
-                <label class="block text-gray-700 text-sm mb-1">Consecutive Periods Required</label>
+                <label class="block text-gray-700 text-sm mb-1">Min Consecutive Periods</label>
                 <input type="number" min="1" max="5" class="w-full p-2 border rounded" id="consecutive-${subject}" value="1">
             </div>
         `;
         container.appendChild(subjectDiv);
     });
+    
+    // Fill in values from example data
+    if (exampleData && exampleData.consecutive_periods) {
+        for (const [subject, minConsecutive] of Object.entries(exampleData.consecutive_periods)) {
+            const input = document.getElementById(`consecutive-${subject}`);
+            if (input) input.value = minConsecutive;
+        }
+    }
 }
 
 function populateFixedAssignments() {
-    // Reset fixed assignments
-    fixedAssignments = [];
-    updateFixedAssignmentsList();
-    
-    // Populate dropdowns
+    // Populate select options
     const teacherSelect = document.getElementById('fixed-teacher');
     const classSelect = document.getElementById('fixed-class');
     const subjectSelect = document.getElementById('fixed-subject');
     
-    teacherSelect.innerHTML = '';
-    classSelect.innerHTML = '';
-    subjectSelect.innerHTML = '';
+    teacherSelect.innerHTML = '<option value="">Select Teacher</option>';
+    classSelect.innerHTML = '<option value="">Select Class</option>';
+    subjectSelect.innerHTML = '<option value="">Select Subject</option>';
     
     const teachers = getArrayFromTextarea('teachers');
     const classes = getArrayFromTextarea('classes');
     const subjects = getArrayFromTextarea('subjects');
     
     teachers.forEach(teacher => {
-        const option = document.createElement('option');
-        option.value = teacher;
-        option.textContent = teacher;
-        teacherSelect.appendChild(option);
+        teacherSelect.innerHTML += `<option value="${teacher}">${teacher}</option>`;
     });
     
     classes.forEach(classId => {
-        const option = document.createElement('option');
-        option.value = classId;
-        option.textContent = classId;
-        classSelect.appendChild(option);
+        classSelect.innerHTML += `<option value="${classId}">${classId}</option>`;
     });
     
     subjects.forEach(subject => {
-        const option = document.createElement('option');
-        option.value = subject;
-        option.textContent = subject;
-        subjectSelect.appendChild(option);
+        subjectSelect.innerHTML += `<option value="${subject}">${subject}</option>`;
     });
+    
+    // Load fixed assignments from example data
+    if (exampleData && exampleData.fixed_assignments) {
+        fixedAssignments = [...exampleData.fixed_assignments];
+    }
+    
+    // Update the list display
+    updateFixedAssignmentsList();
 }
 
 function addFixedAssignment() {
@@ -666,128 +855,69 @@ function collectFormData() {
 function generateSchedule() {
     // Show loading spinner
     document.getElementById('loading-spinner').classList.remove('hidden');
+    document.getElementById('generate-schedule').disabled = true;
     
-    // Collect form data
+    // Collect all form data
     const data = collectFormData();
     
-    // Make API call to BytePlus cloud function
-    // In a real implementation, replace with your actual API endpoint
-    const apiUrl = 'https://your-byteplus-function-url.example.com';
-    
-    // Simulate API call with setTimeout (replace with actual fetch in production)
-    setTimeout(() => {
-        // This is a simulated response
-        const simulatedResponse = {
-            solution: simulateSolution(data),
-            teachers: data.teachers,
-            subjects: data.subjects,
-            classes: data.classes,
-            rooms: data.rooms,
-            days: data.days,
-            periods: data.periods,
-            break_periods: data.break_periods
-        };
-        
-        // Hide loading spinner
-        document.getElementById('loading-spinner').classList.add('hidden');
-        
-        // Process and display results
-        timetableData = simulatedResponse;
-        showStep(5);
-        switchView('room');
-    }, 2000);
-    
-    /* 
-    // Real implementation would use fetch:
-    fetch(apiUrl, {
+    // Call the API endpoint
+    fetch('/api/schedule', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => {
+                throw new Error(err.error || 'Failed to generate schedule');
+            });
+        }
+        return response.json();
+    })
+    .then(result => {
         // Hide loading spinner
         document.getElementById('loading-spinner').classList.add('hidden');
+        document.getElementById('generate-schedule').disabled = false;
         
-        if (data.error) {
-            alert('Error generating schedule: ' + data.error);
-            return;
+        // Store the timetable data
+        timetableData = result;
+        
+        // Show the results step
+        showStep(5);
+        
+        // Initialize the timetable view
+        currentView = 'room';
+        if (timetableData.rooms && timetableData.rooms.length > 0) {
+            currentEntity = timetableData.rooms[0];
         }
         
-        // Process and display results
-        timetableData = data;
-        showStep(5);
-        switchView('room');
+        // Populate the entity select
+        const viewEntitySelect = document.getElementById('view-entity-select');
+        viewEntitySelect.innerHTML = '';
+        timetableData.rooms.forEach(room => {
+            viewEntitySelect.innerHTML += `<option value="${room}">${room}</option>`;
+        });
+        
+        // Add event listener to switch entity
+        viewEntitySelect.addEventListener('change', function() {
+            currentEntity = this.value;
+            renderTimetable();
+        });
+        
+        // Render the timetable
+        renderTimetable();
     })
     .catch(error => {
         // Hide loading spinner
         document.getElementById('loading-spinner').classList.add('hidden');
-        alert('Error connecting to scheduler service: ' + error.message);
+        document.getElementById('generate-schedule').disabled = false;
+        
+        // Show error message
+        alert(`Error: ${error.message}`);
+        console.error('Error generating schedule:', error);
     });
-    */
-}
-
-// This function creates a simulated solution for development/testing
-function simulateSolution(data) {
-    const solution = {};
-    
-    data.days.forEach(day => {
-        data.periods.forEach(period => {
-            const key = `${day}_${period}`;
-            
-            // Skip break periods
-            if (data.break_periods.some(bp => bp[0] === day && bp[1] === period)) {
-                solution[key] = [];
-                return;
-            }
-            
-            solution[key] = [];
-            
-            // Try to assign each class to a different room and teacher
-            data.classes.forEach(classId => {
-                // Find subjects this class needs
-                const classSubjects = Object.keys(data.class_subjects[classId] || {});
-                if (classSubjects.length === 0) return;
-                
-                // Pick a random subject
-                const subject = classSubjects[Math.floor(Math.random() * classSubjects.length)];
-                
-                // Find teachers who can teach this subject to this class
-                const availableTeachers = data.teachers.filter(teacher => {
-                    return (data.teacher_subjects[teacher] || []).includes(subject) &&
-                           (data.teacher_classes[teacher] || []).includes(classId) &&
-                           !solution[key].some(a => a.teacher === teacher);
-                });
-                
-                if (availableTeachers.length === 0) return;
-                
-                // Pick a random teacher
-                const teacher = availableTeachers[Math.floor(Math.random() * availableTeachers.length)];
-                
-                // Find suitable rooms
-                const suitableRooms = (data.room_suitability[subject] || data.rooms).filter(room => 
-                    !solution[key].some(a => a.room === room)
-                );
-                
-                if (suitableRooms.length === 0) return;
-                
-                // Pick a random room
-                const room = suitableRooms[Math.floor(Math.random() * suitableRooms.length)];
-                
-                // Add assignment
-                solution[key].push({
-                    teacher: teacher,
-                    class: classId,
-                    subject: subject,
-                    room: room
-                });
-            });
-        });
-    });
-    
-    return solution;
 }
 
 // Display functions
