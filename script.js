@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listener for loading example data
     document.getElementById('load-example').addEventListener('click', loadExampleData);
     
-    // Populate sample data for demo purposes
-    populateSampleData();
+    // Add event listener for JSON file upload
+    document.getElementById('json-file-input').addEventListener('change', handleFileUpload);
 });
 
 // Navigation functions
@@ -166,6 +166,69 @@ function loadExampleData() {
         console.error('Error loading example data:', error);
         alert('Failed to load example data. Please check the console for details.');
     }
+}
+
+// Handle JSON file upload
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            
+            // Validate the JSON structure
+            if (!validateJsonStructure(data)) {
+                alert('Invalid JSON structure. Please check the file format.');
+                return;
+            }
+            
+            // Fill in basic data
+            document.getElementById('teachers').value = data.teachers.join('\n');
+            document.getElementById('subjects').value = data.subjects.join('\n');
+            document.getElementById('classes').value = data.classes.join('\n');
+            document.getElementById('rooms').value = data.rooms.join('\n');
+            document.getElementById('days').value = data.days.join('\n');
+            document.getElementById('periods').value = data.periods.join('\n');
+            
+            // Store fixed assignments for later use
+            fixedAssignments = data.fixed_assignments || [];
+            
+            // Alert the user
+            alert('JSON data loaded successfully! Click Next to continue.');
+            
+            // Reset the file input
+            document.getElementById('json-file-input').value = '';
+        } catch (error) {
+            console.error('Error parsing JSON file:', error);
+            alert('Failed to parse JSON file. Please check the file format.');
+        }
+    };
+    
+    reader.onerror = function() {
+        console.error('Error reading file');
+        alert('Error reading file. Please try again.');
+    };
+    
+    reader.readAsText(file);
+}
+
+// Validate JSON structure
+function validateJsonStructure(data) {
+    // Check required fields
+    const requiredFields = ['teachers', 'subjects', 'classes', 'rooms', 'days', 'periods'];
+    for (const field of requiredFields) {
+        if (!data[field] || !Array.isArray(data[field]) || data[field].length === 0) {
+            console.error(`Missing or invalid required field: ${field}`);
+            return false;
+        }
+    }
+    
+    // Additional validations can be added here
+    
+    return true;
 }
 
 // Form validation functions
@@ -806,8 +869,8 @@ function collectFormData() {
     // Collect break periods
     data.days.forEach(day => {
         data.periods.forEach(period => {
-            const isBreak = document.getElementById(`break-${day}-${period}`).checked;
-            if (isBreak) {
+            const breakCheckbox = document.querySelector(`input[name="break-period"][data-day="${day}"][data-period="${period}"]`);
+            if (breakCheckbox && breakCheckbox.checked) {
                 data.break_periods.push([day, period]);
             }
         });
@@ -815,7 +878,7 @@ function collectFormData() {
     
     // Collect teacher unavailability
     data.teachers.forEach(teacher => {
-        const unavailableCheckboxes = document.querySelectorAll(`input[id^="unavailable-${teacher}-"]:checked`);
+        const unavailableCheckboxes = document.querySelectorAll(`input[name="unavailable-${teacher}"]:checked`);
         if (unavailableCheckboxes.length > 0) {
             data.teacher_unavailability[teacher] = Array.from(unavailableCheckboxes).map(cb => {
                 return [cb.dataset.day, cb.dataset.period];
@@ -825,7 +888,7 @@ function collectFormData() {
     
     // Collect teacher preferences
     data.teachers.forEach(teacher => {
-        const preferenceInputs = document.querySelectorAll(`input[id^="preference-${teacher}-"]`);
+        const preferenceInputs = document.querySelectorAll(`input[name="preference-${teacher}"]`);
         const preferences = [];
         
         preferenceInputs.forEach(input => {
